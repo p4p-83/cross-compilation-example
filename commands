@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+set -e
+setopt verbose
+
+# derived from https://desertbot.io/blog/how-to-cross-compile-for-raspberry-pi
+
+# install / update the container
+# this loads Raspberry Pi's Ubuntu → Raspberry Pi OS cross compiler
+# and runs it in a container on macOS
+docker pull mitchallen/pi-cross-compile
+
+# example project
+[[ -d hello ]] || git clone https://github.com/mitchallen/pi-hello-cross-compile.git --depth=1 hello
+
+# run the compiler
+docker run -it -v ./hello:/build mitchallen/pi-cross-compile
+
+# display the binaries
+ls hello/bin
+
